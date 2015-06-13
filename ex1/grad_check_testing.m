@@ -1,0 +1,1 @@
+grad_check(@softmax_regression_vec,theta(:,1:9),10,train.X,train.y);
