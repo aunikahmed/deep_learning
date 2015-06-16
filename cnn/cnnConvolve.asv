@@ -68,8 +68,7 @@ for imageNum = 1:numImages
 %     feature = sum(sum(patch.*W(:,:,filterNum)))+b(filterNum);
 %     feature = 1./(1+exp(-feature));
     
-     'convolve size'
-    size(convolvedImage)
+    
     % Add the bias unit
     % Then, apply the sigmoid function to get the hidden activation
 
