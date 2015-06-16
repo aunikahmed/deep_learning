@@ -53,8 +53,7 @@ for imageNum = 1:numImages
       
     % Obtain the image
     im = squeeze(images(:, :, imageNum));
-    'image size'
-    size(im)
+   
     % Convolve "filter" with "im", adding the result to convolvedImage
     % be sure to do a 'valid' convolution
 
@@ -68,8 +67,7 @@ for imageNum = 1:numImages
 %     feature = sum(sum(patch.*W(:,:,filterNum)))+b(filterNum);
 %     feature = 1./(1+exp(-feature));
     
-     'convolve size'
-    size(convolvedImage)
+    
     % Add the bias unit
     % Then, apply the sigmoid function to get the hidden activation
 

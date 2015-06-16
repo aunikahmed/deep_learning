@@ -38,10 +38,9 @@ for imageNum = 1:numImages
         
         meanFilter = ones(poolDim, poolDim);
         %meanFilter = meanFilter + 1/(poolDim * poolDim);
-        tempFeature = conv2(feature, meanFilter,'valid');
-        subsampledFeature = tempFeature(1:poolDim:end,1:poolDim:end);
-        subsampledFeature = subsampledFeature ./(poolDim*poolDim);
-        pooledFeatures(:,:,filterNum,imageNum) = subsampledFeature;
+        convolvedFeatur = conv2(feature, meanFilter,'valid')
+        downsample(,);
+        pooledFeatures(:,:,filterNum,imageNum) = conv2(feature, meanFilter,'valid');
     end
 
 end

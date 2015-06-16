@@ -49,7 +49,7 @@ convolvedFeatures = cnnConvolve(filterDim, numFilters, convImages, W, b);
 %  provided some code to compare the results of your convolution with
 %  activations from the sparse autoencoder
 
-% For 1000 random points
+%For 1000 random points
 for i = 1:1000   
     filterNum = randi([1, numFilters]);
     imageNum = randi([1, 8]);
@@ -74,33 +74,33 @@ for i = 1:1000
 end
 
 disp('Congratulations! Your convolution code passed the test.');
-% % 
-% % %%======================================================================
-% % %% STEP 2: Implement and test pooling
-% % %  Implement pooling in the function cnnPool in cnnPool.m
-% % 
-% % %% STEP 2a: Implement pooling
-% % % NOTE: Implement cnnPool in cnnPool.m first!
-% % pooledFeatures = cnnPool(poolDim, convolvedFeatures);
-% % 
-% % %% STEP 2b: Checking your pooling
-% % %  To ensure that you have implemented pooling, we will use your pooling
-% % %  function to pool over a test matrix and check the results.
-% % 
-% % testMatrix = reshape(1:64, 8, 8);
-% % expectedMatrix = [mean(mean(testMatrix(1:4, 1:4))) mean(mean(testMatrix(1:4, 5:8))); ...
-% %                   mean(mean(testMatrix(5:8, 1:4))) mean(mean(testMatrix(5:8, 5:8))); ];
-% %             
-% % testMatrix = reshape(testMatrix, 8, 8, 1, 1);
-% %         
-% % pooledFeatures = squeeze(cnnPool(4, testMatrix));
-% % 
-% % if ~isequal(pooledFeatures, expectedMatrix)
-% %     disp('Pooling incorrect');
-% %     disp('Expected');
-% %     disp(expectedMatrix);
-% %     disp('Got');
-% %     disp(pooledFeatures);
-% % else
-% %     disp('Congratulations! Your pooling code passed the test.');
-% % end
+
+%%======================================================================
+%% STEP 2: Implement and test pooling
+%  Implement pooling in the function cnnPool in cnnPool.m
+
+%% STEP 2a: Implement pooling
+% NOTE: Implement cnnPool in cnnPool.m first!
+pooledFeatures = cnnPool(poolDim, convolvedFeatures);
+
+%% STEP 2b: Checking your pooling
+%  To ensure that you have implemented pooling, we will use your pooling
+%  function to pool over a test matrix and check the results.
+
+testMatrix = reshape(1:64, 8, 8);
+expectedMatrix = [mean(mean(testMatrix(1:4, 1:4))) mean(mean(testMatrix(1:4, 5:8))); ...
+                  mean(mean(testMatrix(5:8, 1:4))) mean(mean(testMatrix(5:8, 5:8))); ];
+            
+testMatrix = reshape(testMatrix, 8, 8, 1, 1);
+        
+pooledFeatures = squeeze(cnnPool(4, testMatrix));
+
+if ~isequal(pooledFeatures, expectedMatrix)
+    disp('Pooling incorrect');
+    disp('Expected');
+    disp(expectedMatrix);
+    disp('Got');
+    disp(pooledFeatures);
+else
+    disp('Congratulations! Your pooling code passed the test.');
+end
