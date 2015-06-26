@@ -73,6 +73,10 @@ activationsPooled = zeros(outputDim,outputDim,numFilters,numImages);
 
 %%% YOUR CODE HERE %%%
 
+ activations = activations + cnnConvolve(filterDim, numFilters, images, Wc, bc);
+
+activationsPooled = activationsPooled + cnnPool(poolDim,activations);
+
 % Reshape activations into 2-d matrix, hiddenSize x numImages,
 % for Softmax layer
 activationsPooled = reshape(activationsPooled,[],numImages);
@@ -87,7 +91,16 @@ activationsPooled = reshape(activationsPooled,[],numImages);
 % each class.
 probs = zeros(numClasses,numImages);
 
+
+
 %%% YOUR CODE HERE %%%
+
+Wd = [bd Wd];
+%'size Wd'
+%size(Wd)
+activationsPooled = [ones(1,size(activationsPooled,2)); activationsPooled];
+probs = probs + 1./(1 + exp(-Wd * activationsPooled));
+
 
 %%======================================================================
 %% STEP 1b: Calculate Cost
@@ -98,8 +111,18 @@ probs = zeros(numClasses,numImages);
 cost = 0; % save objective into cost
 
 %%% YOUR CODE HERE %%%
+  %sprintf('Size of activationsPooled %d * %d',size(activationsPooled,1),size(activationsPooled,2))
+  var1 = exp(Wd * activationsPooled);
+  sumOverColVar1 = sum(var1,1);
+  var2 = bsxfun(@rdivide, var1 , sumOverColVar1);
+  
+  var3 = log(var2);
+  I = sub2ind(size(var3),  labels', 1:size(var3,2));
+  values = var3(I);
+  cost = - sum(values);  
 
-% Makes predictions given probs and returns without backproagating errors.
+  
+  % Makes predictions given probs and returns without backproagating errors.
 if pred
     [~,preds] = max(probs,[],1);
     preds = preds';
@@ -117,8 +140,15 @@ end;
 %  Use the kron function and a matrix of ones to do this upsampling 
 %  quickly.
 
-%%% YOUR CODE HERE %%%
-
+%%% YOUR CODE HERE %%% 
+ var4 = zeros(size(var3));
+  var4(I) = 1; 
+  gg = activationsPooled * (var4 - var2)';
+  %  sprintf('Size of gg %d * %d',size(gg,1),size(gg,2))
+  g = - gg(2:end,:);  
+  sprintf('Size of g %d * %d',size(g,1),size(g,2))
+  Wd_grad = Wd_grad + g';
+  bd_grad = bd_grad + gg(1,:)';
 %%======================================================================
 %% STEP 1d: Gradient Calculation
 %  After backpropagating the errors above, we can use them to calculate the

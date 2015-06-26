@@ -61,13 +61,7 @@ for imageNum = 1:numImages
     temp = conv2(im, filter,'valid');   
     convolvedImage = 1./(1 + exp(-(temp + b(filterNum))));
     
-    
-%     patch = convImages(imageRow:imageRow + filterDim - 1, imageCol:imageCol + filterDim - 1, imageNum);
-% 
-%     feature = sum(sum(patch.*W(:,:,filterNum)))+b(filterNum);
-%     feature = 1./(1+exp(-feature));
-    
-    
+   
     % Add the bias unit
     % Then, apply the sigmoid function to get the hidden activation
 
