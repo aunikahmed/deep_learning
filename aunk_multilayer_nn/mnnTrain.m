@@ -20,14 +20,25 @@ unitsPerLayer = [28*28, 256, 10]; % Number of units per layer including
 
 
 % Load MNIST Train
-addpath ../common/;
-images = loadMNISTImages('../common/train-images-idx3-ubyte');
-images = reshape(images,imageDim,imageDim,[]);
-labels = loadMNISTLabels('../common/train-labels-idx1-ubyte');
-labels(labels==0) = 10; % Remap 0 to 10
+ addpath ../common;
+% images = loadMNISTImages('../common/train-images-idx3-ubyte');
+% images = reshape(images,imageDim,imageDim,[]);
+% labels = loadMNISTLabels('../common/train-labels-idx1-ubyte');
+% labels(labels==0) = 10; % Remap 0 to 10
+
+binary_digits = false;
+
+[train,test] = mnn_load_mnist(binary_digits);
+
+% Add row of 1s to the dataset to act as an intercept term.
+train.y = train.y+1; % make labels 1-based.
+test.y = test.y+1; % make labels 1-based.
+
 
 % Initialize Parameters
 [weight,bias] = mnnInitParams(unitsPerLayer);
-res = mnn(images,labels,unitsPerLayer,weight,bias);
-disp('*******************************************done');
-disp(zeros(15,1));
+[weightCell, biasCell] = mnn(train.X,train.y,unitsPerLayer,weight,bias);
+disp('learning complete ');
+val = getAccuracy(weightCell, biasCell, unitsPerLayer, test.X, test.y);
+
+fprintf('Accuracy %d',val);

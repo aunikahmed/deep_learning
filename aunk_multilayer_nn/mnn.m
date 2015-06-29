@@ -1,12 +1,12 @@
-function [ output_args ] = mnn( images, labels, unitsPerLayer, weight, bias )
+function [ weightCell, biasCell ] = mnn( images, labels, unitsPerLayer, weight, bias )
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 %% init phase
     numLayer = size(unitsPerLayer,2);
     outDim = unitsPerLayer(end);
-    m = size(labels,1);
+    m = size(labels,2);
     y =  zeros(outDim,m);
-    I = sub2ind(size(y),labels',1:m);
+    I = sub2ind(size(y),labels,1:m);
     y(I) = 1;
        
     [wCell, bCell] = stackWeightIncell(weight,bias,unitsPerLayer);
@@ -19,14 +19,15 @@ function [ output_args ] = mnn( images, labels, unitsPerLayer, weight, bias )
     
    
     
-   alpha = .001;
+   alpha = .01;
    for epoc = 1 : 1
        
        [deltaWCell, deltaBCell] = initDelta; % initializing dW and dB
        
        for imageNum = 1 : m
     %% feed forword pass
-            aCell{1,1} = reshape(images(:,:,imageNum),[],1);
+            %aCell{1,1} = reshape(images(:,:,imageNum),[],1);
+            aCell{1,1} = images(:,imageNum);
             for L = 2:numLayer
                 w = wCell{1,L};
                 a = aCell{1,L-1};
@@ -82,7 +83,7 @@ function [ output_args ] = mnn( images, labels, unitsPerLayer, weight, bias )
              wCell{1,L} = w;
              bCell{1,L} = b;
          end
-
+        fprintf('epoch %d\n',epoc);
    end
     
     
@@ -103,6 +104,7 @@ function [ output_args ] = mnn( images, labels, unitsPerLayer, weight, bias )
     function a = f(z)
         a = 1./(1+ exp(-z)); 
     end
-    output_args = rand(2);
+    weightCell = wCell;
+    biasCell = bCell;
 end
 
